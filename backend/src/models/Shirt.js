@@ -1,44 +1,52 @@
+import Sequelize, { Model } from 'sequelize';
 
-import Sequelize from "sequelize";
+class Shirt extends Model {
+  static init(sequelize) {
+    super.init({
+      id: {
+        type: Sequelize.INTEGER,
+        autoIncrement: true,
+        allowNull: false,
+        primaryKey: true,
+      },
+      name: {
+        type: Sequelize.STRING,
+        allowNull: false,
+      },
+      team: {
+        type: Sequelize.STRING,
+        allowNull: false,
+      },
+      price: {
+        type: Sequelize.DOUBLE,
+        allowNull: false,
+      },
+      composition: {
+        type: Sequelize.STRING,
+        allowNull: true,
+      },
+      description: {
+        type: Sequelize.STRING,
+        allowNull: false,
+      },
+      linkimg: {
+        type: Sequelize.STRING,
+        allowNull: false,
+      },
+      url: {
+        type: Sequelize.VIRTUAL,
+        get() {
+          return `${process.env.APP_HOST}/file/${this.linkimg}`;
+        },
+      },
+    }, {
+      sequelize,
+      tableName: 'shirts',
+      timestamps: false,
+    });
 
-import db from "./db";
-
-const Shirt = db.define('shirt', {
-  // Model attributes are defined here
-  id: {
-    type: Sequelize.INTEGER,
-    autoIncrement: true,
-    allowNull: false,
-    primaryKey: true
-  },
-  name: {
-    type: Sequelize.STRING,
-    allowNull : false,
-  },
-  price: {
-    type: Sequelize.DOUBLE,
-    allowNull: false,
-  },
-  composition: {
-    type: Sequelize.STRING,
-    allowNull: true,
-  },
-  description: {
-    type: Sequelize.STRING,
-    allowNull: false,
-  },
-  linkimg: {
-    type: Sequelize.STRING,
-    allowNull: false
+    return this;
   }
-},
-{
-  timestamps: false
-});
+}
 
-Shirt.sync();
-
-//Shirt.sync({alter: true}); verifica se tem diferença na tabela e altera
-
-
-module.exports = Shirt;
+export default Shirt;

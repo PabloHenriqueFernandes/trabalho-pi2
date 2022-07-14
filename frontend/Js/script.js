@@ -1,29 +1,38 @@
 $(function() {
 
-  // $('#form_shirts').submit(function(ev) {
-  //   ev.preventDefault();
-  //   const formData = new FormData(ev.target);
-  //   const values = [];
-  //   formData.forEach((value, key) => values[key] = value);
-  //   $.ajax({
-  //     url: "http://localhost:3333/shirts",
-  //     type: "POST",
-  //     data: values,
-  //     dataType: 'json',
-  //     success: function(response){
-  //       console.log(response);        
-  //     }
-  //   });
-  // });
-  $( '#form_shirts' )
+  // $.ajax({
+  //   url: 'http://localhost:3333/shirts/6',
+  //   method: 'GET',
+  //   success: function(data) {
+  //     console.log(data);
+
+  //     const html = `
+  //       <div>
+  //         <img src="${data.url}" />
+  //         <span>${data.name}</span>
+  //       </div>
+  //     `;
+  //     $('#shirt').html(html);
+  //   },
+  //   error: function(err) {
+  //     console.log(err);
+  //   }
+  // })
+
+  $('#form_shirts')
   .submit(function(e) {
     e.preventDefault();
+    const data = new FormData(this);
     $.ajax({
       url: 'http://localhost:3333/shirts',
-      type: 'POST',
-      data: new FormData(this),
+      data: data,
+      cache: false,
+      contentType: false,
       processData: false,
-      contentType: 'multipart/form-data'
-    });
+      method: 'POST',
+      success: function(data){
+        console.log(data);
+      }
+  });;
   });
 });
